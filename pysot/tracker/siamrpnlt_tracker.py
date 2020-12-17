@@ -56,8 +56,9 @@ class SiamRPNLTTracker(SiamRPNTracker):
             return np.sqrt((w + pad) * (h + pad))
 
         # scale penalty
-        s_c = change(sz(pred_bbox[2, :], pred_bbox[3, :]) /
-                     (sz(self.size[0] * scale_z, self.size[1] * scale_z)))
+        s_c = change(
+            sz(pred_bbox[2, :], pred_bbox[3, :]) /
+            (sz(self.size[0] * scale_z, self.size[1] * scale_z)))
         # ratio penalty
         r_c = change((self.size[0] / self.size[1]) /
                      (pred_bbox[2, :] / pred_bbox[3, :]))
@@ -92,19 +93,13 @@ class SiamRPNLTTracker(SiamRPNTracker):
         self.center_pos = np.array([cx, cy])
         self.size = np.array([width, height])
 
-        cx, cy, width, height = self._bbox_clip(cx, cy, width,
-                                                height, img.shape[:2])
-        bbox = [cx - width / 2,
-                cy - height / 2,
-                width,
-                height]
+        cx, cy, width, height = self._bbox_clip(cx, cy, width, height,
+                                                img.shape[:2])
+        bbox = [cx - width / 2, cy - height / 2, width, height]
 
         if best_score < cfg.TRACK.CONFIDENCE_LOW:
             self.longterm_state = True
         elif best_score > cfg.TRACK.CONFIDENCE_HIGH:
             self.longterm_state = False
 
-        return {
-                'bbox': bbox,
-                'best_score': best_score
-               }
+        return {'bbox': bbox, 'best_score': best_score}

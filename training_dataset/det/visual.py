@@ -16,7 +16,8 @@ for sub_set in sub_sets:
     sub_set_base_path = join(ann_base_path, sub_set)
     class_names = sorted(listdir(sub_set_base_path))
     for vi, class_name in enumerate(class_names):
-        print('subset: {} video id: {:04d} / {:04d}'.format(sub_set, vi, len(class_names)))
+        print('subset: {} video id: {:04d} / {:04d}'.format(
+            sub_set, vi, len(class_names)))
 
         class_base_path = join(sub_set_base_path, class_name)
         xmls = sorted(glob.glob(join(class_base_path, '*.xml')))
@@ -27,12 +28,17 @@ for sub_set in sub_sets:
             frame_sz = [int(it.text) for it in size]
             objects = xmltree.findall('object')
             # if visual:
-            img_path = xml.replace('xml', 'JPEG').replace('Annotations', 'Data')
+            img_path = xml.replace('xml',
+                                   'JPEG').replace('Annotations', 'Data')
             im = cv2.imread(img_path)
             for object_iter in objects:
                 bndbox = object_iter.find('bndbox')
-                bbox = [int(bndbox.find('xmin').text), int(bndbox.find('ymin').text),
-                        int(bndbox.find('xmax').text), int(bndbox.find('ymax').text)]
+                bbox = [
+                    int(bndbox.find('xmin').text),
+                    int(bndbox.find('ymin').text),
+                    int(bndbox.find('xmax').text),
+                    int(bndbox.find('ymax').text)
+                ]
                 if visual:
                     pt1 = (int(bbox[0]), int(bbox[1]))
                     pt2 = (int(bbox[2]), int(bbox[3]))

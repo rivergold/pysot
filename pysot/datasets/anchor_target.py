@@ -13,12 +13,11 @@ from pysot.utils.anchor import Anchors
 
 
 class AnchorTarget:
-    def __init__(self,):
-        self.anchors = Anchors(cfg.ANCHOR.STRIDE,
-                               cfg.ANCHOR.RATIOS,
+    def __init__(self, ):
+        self.anchors = Anchors(cfg.ANCHOR.STRIDE, cfg.ANCHOR.RATIOS,
                                cfg.ANCHOR.SCALES)
 
-        self.anchors.generate_all_anchors(im_c=cfg.TRAIN.SEARCH_SIZE//2,
+        self.anchors.generate_all_anchors(im_c=cfg.TRAIN.SEARCH_SIZE // 2,
                                           size=cfg.TRAIN.OUTPUT_SIZE)
 
     def __call__(self, target, size, neg=False):
@@ -47,10 +46,12 @@ class AnchorTarget:
 
             cx = size // 2
             cy = size // 2
-            cx += int(np.ceil((tcx - cfg.TRAIN.SEARCH_SIZE // 2) /
-                      cfg.ANCHOR.STRIDE + 0.5))
-            cy += int(np.ceil((tcy - cfg.TRAIN.SEARCH_SIZE // 2) /
-                      cfg.ANCHOR.STRIDE + 0.5))
+            cx += int(
+                np.ceil((tcx - cfg.TRAIN.SEARCH_SIZE // 2) /
+                        cfg.ANCHOR.STRIDE + 0.5))
+            cy += int(
+                np.ceil((tcy - cfg.TRAIN.SEARCH_SIZE // 2) /
+                        cfg.ANCHOR.STRIDE + 0.5))
             l = max(0, cx - 3)
             r = min(size, cx + 4)
             u = max(0, cy - 3)

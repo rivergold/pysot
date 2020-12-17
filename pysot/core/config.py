@@ -36,7 +36,6 @@ __C.TRAIN.POS_NUM = 16
 # Number of anchors per images
 __C.TRAIN.TOTAL_NUM = 64
 
-
 __C.TRAIN.EXEMPLAR_SIZE = 127
 
 __C.TRAIN.SEARCH_SIZE = 255
@@ -244,7 +243,6 @@ __C.ANCHOR.SCALES = [8]
 
 # Anchor number
 __C.ANCHOR.ANCHOR_NUM = len(__C.ANCHOR.RATIOS) * len(__C.ANCHOR.SCALES)
-
 
 # ------------------------------------------------------------------------ #
 # Tracker options

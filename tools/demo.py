@@ -20,7 +20,9 @@ torch.set_num_threads(1)
 parser = argparse.ArgumentParser(description='tracking demo')
 parser.add_argument('--config', type=str, help='config file')
 parser.add_argument('--snapshot', type=str, help='model name')
-parser.add_argument('--video_name', default='', type=str,
+parser.add_argument('--video_name',
+                    default='',
+                    type=str,
                     help='videos or image files')
 args = parser.parse_args()
 
@@ -65,8 +67,9 @@ def main():
     model = ModelBuilder()
 
     # load model
-    model.load_state_dict(torch.load(args.snapshot,
-        map_location=lambda storage, loc: storage.cpu()))
+    model.load_state_dict(
+        torch.load(args.snapshot,
+                   map_location=lambda storage, loc: storage.cpu()))
     model.eval().to(device)
 
     # build tracker
@@ -90,16 +93,16 @@ def main():
             outputs = tracker.track(frame)
             if 'polygon' in outputs:
                 polygon = np.array(outputs['polygon']).astype(np.int32)
-                cv2.polylines(frame, [polygon.reshape((-1, 1, 2))],
-                              True, (0, 255, 0), 3)
+                cv2.polylines(frame, [polygon.reshape((-1, 1, 2))], True,
+                              (0, 255, 0), 3)
                 mask = ((outputs['mask'] > cfg.TRACK.MASK_THERSHOLD) * 255)
                 mask = mask.astype(np.uint8)
-                mask = np.stack([mask, mask*255, mask]).transpose(1, 2, 0)
+                mask = np.stack([mask, mask * 255, mask]).transpose(1, 2, 0)
                 frame = cv2.addWeighted(frame, 0.77, mask, 0.23, -1)
             else:
                 bbox = list(map(int, outputs['bbox']))
                 cv2.rectangle(frame, (bbox[0], bbox[1]),
-                              (bbox[0]+bbox[2], bbox[1]+bbox[3]),
+                              (bbox[0] + bbox[2], bbox[1] + bbox[3]),
                               (0, 255, 0), 3)
             cv2.imshow(video_name, frame)
             cv2.waitKey(40)

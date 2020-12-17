@@ -9,7 +9,6 @@ import logging
 
 import torch
 
-
 logger = logging.getLogger('global')
 
 
@@ -20,8 +19,9 @@ def check_keys(model, pretrained_state_dict):
     unused_pretrained_keys = ckpt_keys - model_keys
     missing_keys = model_keys - ckpt_keys
     # filter 'num_batches_tracked'
-    missing_keys = [x for x in missing_keys
-                    if not x.endswith('num_batches_tracked')]
+    missing_keys = [
+        x for x in missing_keys if not x.endswith('num_batches_tracked')
+    ]
     if len(missing_keys) > 0:
         logger.info('[Warning] missing keys: {}'.format(missing_keys))
         logger.info('missing keys:{}'.format(len(missing_keys)))
@@ -47,7 +47,8 @@ def remove_prefix(state_dict, prefix):
 def load_pretrain(model, pretrained_path):
     logger.info('load pretrained model from {}'.format(pretrained_path))
     device = torch.cuda.current_device()
-    pretrained_dict = torch.load(pretrained_path,
+    pretrained_dict = torch.load(
+        pretrained_path,
         map_location=lambda storage, loc: storage.cuda(device))
     if "state_dict" in pretrained_dict.keys():
         pretrained_dict = remove_prefix(pretrained_dict['state_dict'],
@@ -73,7 +74,7 @@ def load_pretrain(model, pretrained_path):
 def restore_from(model, optimizer, ckpt_path):
     device = torch.cuda.current_device()
     ckpt = torch.load(ckpt_path,
-        map_location=lambda storage, loc: storage.cuda(device))
+                      map_location=lambda storage, loc: storage.cuda(device))
     epoch = ckpt['epoch']
 
     ckpt_model_dict = remove_prefix(ckpt['state_dict'], 'module.')

@@ -9,7 +9,6 @@ from collections import namedtuple
 
 import numpy as np
 
-
 Corner = namedtuple('Corner', 'x1 y1 x2 y2')
 # alias
 BBox = Corner
@@ -74,8 +73,8 @@ def IoU(rect1, rect2):
     ww = np.maximum(0, xx2 - xx1)
     hh = np.maximum(0, yy2 - yy1)
 
-    area = (x2-x1) * (y2-y1)
-    target_a = (tx2-tx1) * (ty2 - ty1)
+    area = (x2 - x1) * (y2 - y1)
+    target_a = (tx2 - tx1) * (ty2 - ty1)
     inter = ww * hh
     iou = inter / (area + target_a - inter)
     return iou
@@ -84,7 +83,7 @@ def IoU(rect1, rect2):
 def cxy_wh_2_rect(pos, sz):
     """ convert (cx, cy, w, h) to (x1, y1, w, h), 0-index
     """
-    return np.array([pos[0]-sz[0]/2, pos[1]-sz[1]/2, sz[0], sz[1]])
+    return np.array([pos[0] - sz[0] / 2, pos[1] - sz[1] / 2, sz[0], sz[1]])
 
 
 def rect_2_cxy_wh(rect):
@@ -97,7 +96,8 @@ def rect_2_cxy_wh(rect):
 def cxy_wh_2_rect1(pos, sz):
     """ convert (cx, cy, w, h) to (x1, y1, w, h), 1-index
     """
-    return np.array([pos[0]-sz[0]/2+1, pos[1]-sz[1]/2+1, sz[0], sz[1]])
+    return np.array(
+        [pos[0] - sz[0] / 2 + 1, pos[1] - sz[1] / 2 + 1, sz[0], sz[1]])
 
 
 def rect1_2_cxy_wh(rect):
@@ -129,8 +129,8 @@ def get_axis_aligned_bbox(region):
         y = region[1]
         w = region[2]
         h = region[3]
-        cx = x+w/2
-        cy = y+h/2
+        cx = x + w / 2
+        cy = y + h / 2
     return cx, cy, w, h
 
 
@@ -152,6 +152,6 @@ def get_min_max_bbox(region):
         y = region[1]
         w = region[2]
         h = region[3]
-        cx = x+w/2
-        cy = y+h/2
+        cx = x + w / 2
+        cy = y + h / 2
     return cx, cy, w, h

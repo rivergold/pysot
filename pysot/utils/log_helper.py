@@ -10,7 +10,6 @@ import logging
 import math
 import sys
 
-
 if hasattr(sys, 'frozen'):  # support for py2exe
     _srcfile = "logging%s__init__%s" % (os.sep, __file__[-4:])
 elif __file__[-4:].lower() in ['.pyc', '.pyo']:
@@ -35,7 +34,9 @@ class Dummy:
         pass
 
     def __getattr__(self, arg):
-        def dummy(*args, **kwargs): pass
+        def dummy(*args, **kwargs):
+            pass
+
         return dummy
 
 
@@ -47,7 +48,8 @@ def get_format(logger, level):
             logger.addFilter(Filter(rank == 0))
     else:
         rank = 0
-    format_str = '[%(asctime)s-rk{}-%(filename)s#%(lineno)3d] %(message)s'.format(rank)
+    format_str = '[%(asctime)s-rk{}-%(filename)s#%(lineno)3d] %(message)s'.format(
+        rank)
     formatter = logging.Formatter(format_str)
     return formatter
 
@@ -94,15 +96,13 @@ def print_speed(i, i_time, n):
     average_time = i_time
     remaining_time = (n - i) * average_time
     remaining_day = math.floor(remaining_time / 86400)
-    remaining_hour = math.floor(remaining_time / 3600 -
-                                remaining_day * 24)
-    remaining_min = math.floor(remaining_time / 60 -
-                               remaining_day * 1440 -
+    remaining_hour = math.floor(remaining_time / 3600 - remaining_day * 24)
+    remaining_min = math.floor(remaining_time / 60 - remaining_day * 1440 -
                                remaining_hour * 60)
-    logger.info('Progress: %d / %d [%d%%], Speed: %.3f s/iter, ETA %d:%02d:%02d (D:H:M)\n' %
-                (i, n, i / n * 100,
-                 average_time,
-                 remaining_day, remaining_hour, remaining_min))
+    logger.info(
+        'Progress: %d / %d [%d%%], Speed: %.3f s/iter, ETA %d:%02d:%02d (D:H:M)\n'
+        % (i, n, i / n * 100, average_time, remaining_day, remaining_hour,
+           remaining_min))
 
 
 def find_caller():
@@ -141,7 +141,7 @@ class LogOnce:
             return
         self.logged.add(key)
         message = "{filename:s}<{caller}>#{lineno:3d}] {strings}".format(
-                filename=fn, lineno=lineno, strings=strings, caller=caller)
+            filename=fn, lineno=lineno, strings=strings, caller=caller)
         self.logger.info(message)
 
 
@@ -153,9 +153,10 @@ def log_once(strings):
 
 
 def main():
-    for i, lvl in enumerate([logging.DEBUG, logging.INFO,
-                             logging.WARNING, logging.ERROR,
-                             logging.CRITICAL]):
+    for i, lvl in enumerate([
+            logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR,
+            logging.CRITICAL
+    ]):
         log_name = str(lvl)
         init_log(log_name, lvl)
         logger = logging.getLogger(log_name)

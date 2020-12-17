@@ -20,10 +20,17 @@ class NFSVideo(Video):
         gt_rect: groundtruth rectangle
         attr: attribute of video
     """
-    def __init__(self, name, root, video_dir, init_rect, img_names,
-            gt_rect, attr, load_img=False):
-        super(NFSVideo, self).__init__(name, root, video_dir,
-                init_rect, img_names, gt_rect, attr, load_img)
+    def __init__(self,
+                 name,
+                 root,
+                 video_dir,
+                 init_rect,
+                 img_names,
+                 gt_rect,
+                 attr,
+                 load_img=False):
+        super(NFSVideo, self).__init__(name, root, video_dir, init_rect,
+                                       img_names, gt_rect, attr, load_img)
 
     # def load_tracker(self, path, tracker_names=None):
     #     """
@@ -49,6 +56,7 @@ class NFSVideo(Video):
 
     #     self.tracker_names = list(self.pred_trajs.keys())
 
+
 class NFSDataset(Dataset):
     """
     Args:
@@ -57,21 +65,19 @@ class NFSDataset(Dataset):
     """
     def __init__(self, name, dataset_root, load_img=False):
         super(NFSDataset, self).__init__(name, dataset_root)
-        with open(os.path.join(dataset_root, name+'.json'), 'r') as f:
+        with open(os.path.join(dataset_root, name + '.json'), 'r') as f:
             meta_data = json.load(f)
 
         # load videos
-        pbar = tqdm(meta_data.keys(), desc='loading '+name, ncols=100)
+        pbar = tqdm(meta_data.keys(), desc='loading ' + name, ncols=100)
         self.videos = {}
         for video in pbar:
             pbar.set_postfix_str(video)
-            self.videos[video] = NFSVideo(video,
-                                          dataset_root,
+            self.videos[video] = NFSVideo(video, dataset_root,
                                           meta_data[video]['video_dir'],
                                           meta_data[video]['init_rect'],
                                           meta_data[video]['img_names'],
-                                          meta_data[video]['gt_rect'],
-                                          None)
+                                          meta_data[video]['gt_rect'], None)
 
         self.attr = {}
         self.attr['ALL'] = list(self.videos.keys())

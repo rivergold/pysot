@@ -8,19 +8,13 @@ import torch.nn as nn
 
 
 def conv_bn(inp, oup, stride, padding=1):
-    return nn.Sequential(
-        nn.Conv2d(inp, oup, 3, stride, padding, bias=False),
-        nn.BatchNorm2d(oup),
-        nn.ReLU6(inplace=True)
-    )
+    return nn.Sequential(nn.Conv2d(inp, oup, 3, stride, padding, bias=False),
+                         nn.BatchNorm2d(oup), nn.ReLU6(inplace=True))
 
 
 def conv_1x1_bn(inp, oup):
-    return nn.Sequential(
-        nn.Conv2d(inp, oup, 1, 1, 0, bias=False),
-        nn.BatchNorm2d(oup),
-        nn.ReLU6(inplace=True)
-    )
+    return nn.Sequential(nn.Conv2d(inp, oup, 1, 1, 0, bias=False),
+                         nn.BatchNorm2d(oup), nn.ReLU6(inplace=True))
 
 
 class InvertedResidual(nn.Module):
@@ -40,9 +34,14 @@ class InvertedResidual(nn.Module):
             nn.BatchNorm2d(inp * expand_ratio),
             nn.ReLU6(inplace=True),
             # dw
-            nn.Conv2d(inp * expand_ratio, inp * expand_ratio, 3,
-                      stride, padding, dilation=dilation,
-                      groups=inp * expand_ratio, bias=False),
+            nn.Conv2d(inp * expand_ratio,
+                      inp * expand_ratio,
+                      3,
+                      stride,
+                      padding,
+                      dilation=dilation,
+                      groups=inp * expand_ratio,
+                      bias=False),
             nn.BatchNorm2d(inp * expand_ratio),
             nn.ReLU6(inplace=True),
             # pw-linear
@@ -109,11 +108,13 @@ class MobileNetV2(nn.Sequential):
                         dd = d
                     else:
                         dd = max(d // 2, 1)
-                    layers.append(InvertedResidual(input_channel,
-                                                   output_channel, s, t, dd))
+                    layers.append(
+                        InvertedResidual(input_channel, output_channel, s, t,
+                                         dd))
                 else:
-                    layers.append(InvertedResidual(input_channel,
-                                                   output_channel, 1, t, d))
+                    layers.append(
+                        InvertedResidual(input_channel, output_channel, 1, t,
+                                         d))
                 input_channel = output_channel
 
             last_dilation = d

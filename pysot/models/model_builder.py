@@ -20,22 +20,18 @@ class ModelBuilder(nn.Module):
         super(ModelBuilder, self).__init__()
 
         # build backbone
-        self.backbone = get_backbone(cfg.BACKBONE.TYPE,
-                                     **cfg.BACKBONE.KWARGS)
+        self.backbone = get_backbone(cfg.BACKBONE.TYPE, **cfg.BACKBONE.KWARGS)
 
         # build adjust layer
         if cfg.ADJUST.ADJUST:
-            self.neck = get_neck(cfg.ADJUST.TYPE,
-                                 **cfg.ADJUST.KWARGS)
+            self.neck = get_neck(cfg.ADJUST.TYPE, **cfg.ADJUST.KWARGS)
 
         # build rpn head
-        self.rpn_head = get_rpn_head(cfg.RPN.TYPE,
-                                     **cfg.RPN.KWARGS)
+        self.rpn_head = get_rpn_head(cfg.RPN.TYPE, **cfg.RPN.KWARGS)
 
         # build mask head
         if cfg.MASK.MASK:
-            self.mask_head = get_mask_head(cfg.MASK.TYPE,
-                                           **cfg.MASK.KWARGS)
+            self.mask_head = get_mask_head(cfg.MASK.TYPE, **cfg.MASK.KWARGS)
 
             if cfg.REFINE.REFINE:
                 self.refine_head = get_refine_head(cfg.REFINE.TYPE)
@@ -59,17 +55,17 @@ class ModelBuilder(nn.Module):
         if cfg.MASK.MASK:
             mask, self.mask_corr_feature = self.mask_head(self.zf, xf)
         return {
-                'cls': cls,
-                'loc': loc,
-                'mask': mask if cfg.MASK.MASK else None
-               }
+            'cls': cls,
+            'loc': loc,
+            'mask': mask if cfg.MASK.MASK else None
+        }
 
     def mask_refine(self, pos):
         return self.refine_head(self.xf, self.mask_corr_feature, pos)
 
     def log_softmax(self, cls):
         b, a2, h, w = cls.size()
-        cls = cls.view(b, 2, a2//2, h, w)
+        cls = cls.view(b, 2, a2 // 2, h, w)
         cls = cls.permute(0, 2, 3, 4, 1).contiguous()
         cls = F.log_softmax(cls, dim=4)
         return cls

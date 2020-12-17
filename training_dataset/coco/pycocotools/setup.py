@@ -10,15 +10,13 @@ ext_modules = [
     Extension(
         '_mask',
         sources=['common/maskApi.c', '_mask.pyx'],
-        include_dirs = [np.get_include(), 'common'],
+        include_dirs=[np.get_include(), 'common'],
         extra_compile_args=['-Wno-cpp', '-Wno-unused-function', '-std=c99'],
     )
 ]
 
 setup(name='pycocotools',
       packages=['pycocotools'],
-      package_dir = {'pycocotools': '.'},
+      package_dir={'pycocotools': '.'},
       version='2.0',
-      ext_modules=
-          cythonize(ext_modules)
-      )
+      ext_modules=cythonize(ext_modules))

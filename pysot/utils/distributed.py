@@ -115,13 +115,13 @@ def dist_init():
 
 def get_rank():
     if not inited:
-        raise(Exception('dist not inited'))
+        raise (Exception('dist not inited'))
     return rank
 
 
 def get_world_size():
     if not inited:
-        raise(Exception('dist not inited'))
+        raise (Exception('dist not inited'))
     return world_size
 
 

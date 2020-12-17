@@ -13,9 +13,9 @@ class Meter(object):
         self.avg = avg
 
     def __repr__(self):
-        return "{name}: {val:.6f} ({avg:.6f})".format(
-            name=self.name, val=self.val, avg=self.avg
-        )
+        return "{name}: {val:.6f} ({avg:.6f})".format(name=self.name,
+                                                      val=self.val,
+                                                      avg=self.avg)
 
     def __format__(self, *tuples, **kwargs):
         return self.__repr__()
@@ -72,9 +72,9 @@ class AverageMeter:
 
     def format_str(self, attr):
         return "{name}: {val:.6f} ({avg:.6f}) ".format(
-                    name=attr,
-                    val=float(self.val[attr]),
-                    avg=float(self.sum[attr]) / self.count[attr])
+            name=attr,
+            val=float(self.val[attr]),
+            avg=float(self.sum[attr]) / self.count[attr])
 
     def __getattr__(self, attr):
         if attr in self.__dict__:
