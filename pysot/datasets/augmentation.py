@@ -14,6 +14,9 @@ from pysot.utils.bbox import corner2center, \
 
 class Augmentation:
     def __init__(self, shift, scale, blur, flip, color):
+        # @rivergold:
+        # template: shift=4, scale=0.05, blur=0.0, flip=0.0, color=1.0
+        # search: shift=64, scale=0.18, blur=0.0, flip=0.0, color=1.0
         self.shift = shift
         self.scale = scale
         self.blur = blur
