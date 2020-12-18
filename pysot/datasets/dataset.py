@@ -154,6 +154,7 @@ class TrkDataset(Dataset):
         self.all_dataset = []
         start = 0
         self.num = 0
+        print(cfg.DATASET.NAMES)
         for name in cfg.DATASET.NAMES:
             subdata_cfg = getattr(cfg.DATASET, name)
             sub_dataset = SubDataset(name, subdata_cfg.ROOT, subdata_cfg.ANNO,
@@ -239,6 +240,8 @@ class TrkDataset(Dataset):
         # get image
         template_image = cv2.imread(template[0])
         search_image = cv2.imread(search[0])
+        cv2.imwrite('./template_image.jpg', template_image)
+        cv2.imwrite('./search_image.jpg', search_image)
 
         # get bounding box
         template_box = self._get_bbox(template_image, template[1])
