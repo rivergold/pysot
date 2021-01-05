@@ -29,9 +29,16 @@ def xcorr_fast(x, kernel):
     """group conv2d to calculate cross correlation, fast version
     """
     batch = kernel.size()[0]
-    pk = kernel.view(-1, x.size()[1], kernel.size()[2], kernel.size()[3])
-    px = x.view(1, -1, x.size()[2], x.size()[3])
-    po = F.conv2d(px, pk, groups=batch)
+    pk = kernel.view(
+        -1,
+        x.size()[1],
+        kernel.size()[2],
+        kernel.size()[3]
+    )  # [N, num_class * C_hidden, H, W] - > [N * num_classes, C_hidden, H, W]
+    px = x.view(1, -1,
+                x.size()[2],
+                x.size()[3])  # [N, C_hidden, H, W] -> [1, N * C_hidden, H, W]
+    po = F.conv2d(px, pk, groups=batch)  # [1, N * num_classes, H, W]
     po = po.view(batch, -1, po.size()[2], po.size()[3])
     return po
 
